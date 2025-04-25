@@ -147,14 +147,14 @@ namespace CatalogOfServices
                     string category = InputValidator.GetString("Введите категорию: ");
                     var categoryServices = services.Where(s => s.Category.Equals(category, StringComparison.OrdinalIgnoreCase)).ToList();
                     Console.WriteLine($"\n--- Услуги в категории '{category}' ---");
-                    ViewAllServices(categoryServices); // Используем метод ViewAllServices для красивого вывода
+                    ViewAllServices(categoryServices); 
                     break;
 
                 case "2":
                     double minRating = InputValidator.GetDoubleInRange("Введите минимальный рейтинг (от 0 до 5): ", 0, 5);
                     var highRatedServices = services.Where(s => s.Rating > minRating).ToList();
                     Console.WriteLine($"\n--- Услуги с рейтингом выше {minRating} ---");
-                    ViewAllServices(highRatedServices); // Используем метод ViewAllServices для красивого вывода
+                    ViewAllServices(highRatedServices); 
                     break;
 
                 case "3":
