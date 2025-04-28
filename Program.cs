@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +8,7 @@ namespace CatalogOfServices
     {
         static void Main(string[] args)
         {
-            var services = DatabaseHelper.ReadData();
+            var services = DatabaseHelper.ReadData(); // Загрузка данных из файла
 
             while (true)
             {
@@ -37,7 +37,7 @@ namespace CatalogOfServices
                         RunQueries(services);
                         break;
                     case "5":
-                        DatabaseHelper.SaveData(services);
+                        DatabaseHelper.SaveData(services); // Сохранение данных перед выходом
                         Console.WriteLine("Выход...");
                         return;
                     default:
@@ -62,7 +62,7 @@ namespace CatalogOfServices
                     "ID", "Название", "Цена", "Категория", "Рейтинг", "Доступность"
                 )
             );
-            Console.WriteLine(new string('-', 84)); // Разделительная линия
+            Console.WriteLine(new string('-', 84)); // Разделительная линия 
 
             // Выводим каждую услугу в формате таблицы
             foreach (var service in services)
@@ -71,7 +71,7 @@ namespace CatalogOfServices
                     string.Format(
                         "{0,-5} | {1,-20} | {2,-10:C} | {3,-15} | {4,-8:F1} | {5,-15}",
                         service.Id,
-                        Truncate(service.Name, 20), // Обрезаем длинные названия
+                        Truncate(service.Name, 20), // Обрезаем длинные названия для читаемости
                         service.Price,
                         Truncate(service.Category, 15), // Обрезаем длинные категории
                         service.Rating,
@@ -84,9 +84,10 @@ namespace CatalogOfServices
         // Метод для обрезания строк до указанной длины
         static string Truncate(string value, int maxLength)
         {
-            if (string.IsNullOrEmpty(value)) return value;
-            return value.Length <= maxLength ? value : value.Substring(0, maxLength - 3) + "...";
+            if (string.IsNullOrEmpty(value)) return value; // Защита от null или пустой строки
+            return value.Length <= maxLength ? value : value.Substring(0, maxLength - 3) + "..."; // Добавляем многоточие
         }
+
         static void AddService(List<Service> services)
         {
             try
@@ -113,7 +114,7 @@ namespace CatalogOfServices
             {
                 int id = InputValidator.GetInt("Введите ID услуги для удаления: ");
 
-                var serviceToRemove = services.FirstOrDefault(s => s.Id == id);
+                var serviceToRemove = services.FirstOrDefault(s => s.Id == id); // Поиск услуги по ID
                 if (serviceToRemove != null)
                 {
                     services.Remove(serviceToRemove);
@@ -158,12 +159,12 @@ namespace CatalogOfServices
                     break;
 
                 case "3":
-                    int availableCount = services.Count(s => s.IsAvailable);
+                    int availableCount = services.Count(s => s.IsAvailable); // Подсчет доступных услуг через LINQ
                     Console.WriteLine($"\nОбщее количество доступных услуг: {availableCount}");
                     break;
 
                 case "4":
-                    decimal averagePrice = services.Average(s => s.Price);
+                    decimal averagePrice = services.Average(s => s.Price); // Вычисление средней цены через LINQ
                     Console.WriteLine($"\nСредняя цена всех услуг: {averagePrice:C}");
                     break;
 
