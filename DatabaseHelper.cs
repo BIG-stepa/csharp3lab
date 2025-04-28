@@ -7,9 +7,10 @@ namespace CatalogOfServices
 {
     public static class DatabaseHelper
     {
+        // Путь к файлу базы данных 
         private const string FilePath = "services.json";
 
-        // Создание начальных данных
+        // Создание начальных данных для базы данных
         public static void CreateInitialData()
         {
             var services = new List<Service>
@@ -21,26 +22,33 @@ namespace CatalogOfServices
                 new Service(5, "Подготовка декларации", 2000, "Финансовая", 4.0, true)
             };
 
-            SaveData(services);
+            SaveData(services); 
         }
 
-        // Чтение данных из файла
+        // Чтение данных из файла базы данных
         public static List<Service> ReadData()
         {
             if (!File.Exists(FilePath))
             {
+                // Если файл не существует, создаем новый с начальными данными
                 Console.WriteLine("Файл базы данных не найден. Создается новый с начальными данными...");
                 CreateInitialData();
             }
 
             string json = File.ReadAllText(FilePath);
+
+            // Десериализация JSON в объект List<Service>
+            // JsonSerializer.Deserialize может вернуть null, если данные некорректны,
+            // поэтому используется оператор ?? для возврата пустого списка в таком случае.
             return JsonSerializer.Deserialize<List<Service>>(json) ?? new List<Service>();
         }
 
-        // Сохранение данных в файл
         public static void SaveData(List<Service> services)
         {
+            // Сериализация данных в JSON с отступами для удобства чтения
+            // WriteIndented = true делает JSON более читаемым для человека.
             string json = JsonSerializer.Serialize(services, new JsonSerializerOptions { WriteIndented = true });
+
             File.WriteAllText(FilePath, json);
         }
     }
